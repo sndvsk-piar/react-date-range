@@ -56,11 +56,43 @@ var InputRangeField = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onChange", function (e) {
       var onChange = _this.props.onChange;
-      var value = parseInt(e.target.value, 10);
-      value = isNaN(value) ? 0 : Math.max(Math.min(MAX, value), MIN);
-      onChange(value);
+      var valueStr = e.target.value;
+
+      if (valueStr === '') {
+        _this.setState({
+          inputValue: ''
+        });
+
+        onChange('');
+        return;
+      }
+
+      if (/^\d+$/.test(valueStr)) {
+        var valueInt = parseInt(valueStr, 10);
+        valueInt = isNaN(valueInt) ? 0 : Math.max(Math.min(MAX, valueInt), MIN);
+
+        if (valueInt >= MIN && valueInt <= MAX) {
+          onChange(valueInt);
+        }
+      }
+
+      _this.setState({
+        inputValue: valueStr
+      });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleFocus", function (e) {
+      _this.inputRef.current.select();
+
+      if (_this.props.onFocus) {
+        _this.props.onFocus(e);
+      }
+    });
+
+    _this.inputRef = /*#__PURE__*/_react.default.createRef();
+    _this.state = {
+      inputValue: props.value !== undefined ? props.value.toString() : ''
+    };
     return _this;
   }
 
@@ -76,23 +108,30 @@ var InputRangeField = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this$state,
+          _this2 = this;
+
       var _this$props2 = this.props,
           label = _this$props2.label,
           placeholder = _this$props2.placeholder,
-          value = _this$props2.value,
           styles = _this$props2.styles,
           onBlur = _this$props2.onBlur,
-          onFocus = _this$props2.onFocus;
+          _onFocus = _this$props2.onFocus;
+      var inputValue = ((_this$state = this.state) === null || _this$state === void 0 ? void 0 : _this$state.inputValue) || '';
       return /*#__PURE__*/_react.default.createElement("div", {
         className: styles.inputRange
       }, /*#__PURE__*/_react.default.createElement("input", {
+        ref: this.inputRef,
+        type: "text",
         className: styles.inputRangeInput,
         placeholder: placeholder,
-        value: value,
-        min: MIN,
-        max: MAX,
+        value: inputValue,
         onChange: this.onChange,
-        onFocus: onFocus,
+        onFocus: function onFocus(e) {
+          _onFocus && _onFocus(e);
+
+          _this2.handleFocus(e);
+        },
         onBlur: onBlur
       }), /*#__PURE__*/_react.default.createElement("span", {
         className: styles.inputRangeLabel
@@ -118,7 +157,7 @@ InputRangeField.propTypes = {
 };
 InputRangeField.defaultProps = {
   value: '',
-  placeholder: '-'
+  placeholder: ''
 };
 var _default = InputRangeField;
 exports.default = _default;

@@ -72,7 +72,15 @@ var DefinedRange = /*#__PURE__*/function (_Component) {
           focusedRange = _this$props.focusedRange;
       var selectedRange = ranges[focusedRange[0]];
       if (!onChange || !selectedRange) return;
-      onChange(_defineProperty({}, selectedRange.key || "range".concat(focusedRange[0] + 1), _objectSpread(_objectSpread({}, selectedRange), range)));
+
+      if (typeof range === 'string' && range === '') {
+        onChange(_defineProperty({}, selectedRange.key || "range".concat(focusedRange[0] + 1), _objectSpread(_objectSpread({}, selectedRange), {}, {
+          startDate: null,
+          endDate: null
+        })));
+      } else {
+        onChange(_defineProperty({}, selectedRange.key || "range".concat(focusedRange[0] + 1), _objectSpread(_objectSpread({}, selectedRange), range)));
+      }
     });
 
     _this.state = {

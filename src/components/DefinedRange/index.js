@@ -19,9 +19,20 @@ class DefinedRange extends Component {
     const { onChange, ranges, focusedRange } = this.props;
     const selectedRange = ranges[focusedRange[0]];
     if (!onChange || !selectedRange) return;
-    onChange({
-      [selectedRange.key || `range${focusedRange[0] + 1}`]: { ...selectedRange, ...range },
-    });
+
+    if (typeof range === 'string' && range === '') {
+      onChange({
+        [selectedRange.key || `range${focusedRange[0] + 1}`]: {
+          ...selectedRange,
+          startDate: null,
+          endDate: null,
+        },
+      });
+    } else {
+      onChange({
+        [selectedRange.key || `range${focusedRange[0] + 1}`]: { ...selectedRange, ...range },
+      });
+    }
   };
 
   getRangeOptionValue(option) {

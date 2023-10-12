@@ -121,7 +121,7 @@ var defaultInputRanges = [{
     };
   },
   getCurrentValue: function getCurrentValue(range) {
-    if (!(0, _isSameDay.default)(range.endDate, defineds.endOfToday)) return '-';
+    if (!(0, _isSameDay.default)(range.endDate, defineds.endOfToday)) return '';
     if (!range.startDate) return '∞';
     return (0, _differenceInCalendarDays.default)(defineds.endOfToday, range.startDate) + 1;
   }
@@ -135,7 +135,7 @@ var defaultInputRanges = [{
     };
   },
   getCurrentValue: function getCurrentValue(range) {
-    if (!(0, _isSameDay.default)(range.startDate, defineds.startOfToday)) return '-';
+    if (!(0, _isSameDay.default)(range.startDate, defineds.startOfToday)) return '';
     if (!range.endDate) return '∞';
     return (0, _differenceInCalendarDays.default)(range.endDate, defineds.startOfToday) + 1;
   }
